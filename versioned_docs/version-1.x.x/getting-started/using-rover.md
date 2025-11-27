@@ -2,6 +2,9 @@
 title: Using Rover
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 Once you have installed rover middleware you can begin to use it. Earlier we stated the project structure in [Getting started](./getting-started.md) guide as follows
 
 ```plaintext
@@ -29,6 +32,9 @@ You can change the default entrypoint by editing `wrangler.tml`. by updating the
 
 Start by creating a router
 
+<Tabs>
+  <TabItem value="js" label="JavaScript">
+
 ```js
 import { createRouter, Rover, reply } from "cloud-rover";
 // Define  a router
@@ -40,10 +46,32 @@ const router = createRouter([
 ]);
 
 // the index handler function
-async function indexHandler(rc): Promise<Response> {
+async function indexHandler(rc) {
   return reply.text("Hello World From Rover!");
 }
 ```
+
+</TabItem>
+  <TabItem value="ts" label="TypeScript">
+
+```ts
+import { createRouter, Rover, reply } from "cloud-rover";
+// Define  a router
+const router = createRouter([
+  {
+    path: "/",
+    handler: indexHandler,
+  },
+]);
+
+// the index handler function
+async function indexHandler(rc: RC): Promise<Response> {
+  return reply.text("Hello World From Rover!");
+}
+```
+
+</TabItem>
+</Tabs>
 
 Here, `indexHandler` is the handler function for that router. More on router will be discussed on Router section
 
@@ -85,12 +113,12 @@ const router = createRouter(
 	]
 )
 
-async function index_handler(rc): Promise<Response> {
+async function index_handler(rc) {
 	return reply.text("Hello World from Rover!")
 }
 
 export default {
-	async fetch(request, env, ctx): Promise<Response> {
+	async fetch(request, env, ctx) {
 		return Rover(request, router, env, ctx)
 	},
 } satisfies ExportedHandler<Env>;
